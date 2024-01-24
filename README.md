@@ -21,41 +21,6 @@ can take the course at your own pace
 ## Syllabus 
 
 ### [Module 1: Data Ingestion & Terraform](module1-data-ingestion)
-* [Python data ingestion with polars and pandas](module1-data-ingestion/python-ingest/)
-* Rust data ingestion
-* [Terraform for BigQuery and GCS](infrastructure/terraform-gcp)
-* Homework
-
-### [Module 2: Workflow Orchestration](module2-workflow-orchestration):
-* [Workflow Orchestration with Airflow (2.x)](module2-workflow-orchestration/airflow)
-* [Workflow Orchestration with Mage](module2-workflow-orchestration/mage)
-* [Workflow Orchestration with Prefect](module2-workflow-orchestration/prefect)
-* [Workflow Orchestration with Legacy Airflow (1.x)](module2-workflow-orchestration/airflow-legacy)
-* Homework
-
-### [Module 3: Data Warehouse](module3-data-warehouse)
-* [BigQuery Data Warehouse](module3-data-warehouse/bigquery)
-* Lakehouse with Delta Lake/Iceberg
-* Homework
-
-### [Module 4: Analytics Engineering](module4-analytics-engineering)
-* [BigQuery and dbt](module4-analytics-engineering/bigquery)
-* [Redshift and dbt](module4-analytics-engineering/redshift)
-* Databricks and dbt
-* [ClickHouse and dbt](module4-analytics-engineering/clickhouse)
-* [PostgreSQL and dbt](module4-analytics-engineering/postgres)
-* [DuckDB and dbt](module4-analytics-engineering/duckdb)
-* [Data Visualization with Superset/Metabase](module4-analytics-engineering/datavis)
-* Homework
-
-### [Module 5: Batch processing](module5-batch-processing)
-* [PySpark on Jupyter Playground](module5-batch-processing/pyspark/notebooks/)
-* PySpark (deploy-mode: 'cluster')  
-* Spark + Scala
-* Spark + Kotlin (TBD)
-* Homework
-
-### [Module 6: Streaming](module6-stream-processing)
-* [Kafka for Stream Processing with Kotlin](module6-stream-processing/kotlin)
-* [Kafka Streams with ksqlDB](module6-stream-processing/ksqldb)
+* [Python data ingestion with pandas](01_docker_terraform/1_docker_postgres/)
+* [Terraform for BigQuery and GCS](01_docker_terraform/1_terraform_gcp)
 * Homework
