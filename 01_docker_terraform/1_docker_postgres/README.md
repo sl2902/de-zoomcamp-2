@@ -42,7 +42,7 @@ pipenv sync
 
 **5.** Run the docker-compose file to load the containers:
 ```shell
-cd 01_docker_postgres
+cd 01_docker_terraform/01_docker_postgres
 docker-compose up -d
 ```
 
