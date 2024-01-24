@@ -1,6 +1,6 @@
 # Python data ingestion with docker, pandas and postgres
 
-![Python](https://img.shields.io/badge/Python-3.9-4B8BBE.svg?style=flat&logo=python&logoColor=FFD43B&labelColor=306998)
+![Python](https://img.shields.io/badge/Python-3.8-4B8BBE.svg?style=flat&logo=python&logoColor=FFD43B&labelColor=306998)
 ![Pandas](https://img.shields.io/badge/pandas-150458?style=flat&logo=pandas&logoColor=E70488&labelColor=150458)
 ![Docker](https://img.shields.io/badge/Docker-329DEE?style=flat&logo=docker&logoColor=white&labelColor=329DEE)
 
