@@ -16,3 +16,5 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=root
     ports:
       - "8080:80"
+    depends_on:
+      - pgdb
