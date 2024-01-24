@@ -1,4 +1,4 @@
-# Python data ingestion with polars and pandas
+# Python data ingestion with docker, pandas and postgres
 
 ![Python](https://img.shields.io/badge/Python-3.10_|_3.11-4B8BBE.svg?style=flat&logo=python&logoColor=FFD43B&labelColor=306998)
 ![Pandas](https://img.shields.io/badge/pandas-150458?style=flat&logo=pandas&logoColor=E70488&labelColor=150458)
@@ -35,12 +35,7 @@ pipenv shell
 pipenv sync
 ```
 
-**4.** Install the dependencies in `Pipfile.lock`:
-```shell
-pipenv sync
-```
-
-**5.** Run the docker-compose file to load the containers:
+**4.** Run the docker-compose file to load the containers:
 ```shell
 cd 01_docker_terraform/01_docker_postgres
 docker-compose up -d
