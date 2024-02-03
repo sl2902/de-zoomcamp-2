@@ -11,6 +11,8 @@
 **google_credentials.json
 **logs/
 **.env
+**/.env
+
 **__pycache__/
 .history
 input_data/*
@@ -19,3 +21,6 @@ input_data/*
 pg_db/*
 
 .ipynb_checkpoints/
+
+#mage
+**/mage_data
