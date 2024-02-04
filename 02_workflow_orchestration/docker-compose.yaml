@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      USER_CODE_PATH: /home/src/${PROJECT_NAME}
+      USER_CODE_PATH: ${MAGE_PATH}/${PROJECT_NAME}
       POSTGRES_DBNAME: ${POSTGRES_DBNAME}
       POSTGRES_SCHEMA: ${POSTGRES_SCHEMA}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -18,11 +18,12 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       GCP_PROJECT_ID: ${GCP_PROJECT_ID}
       GCP_BUCKET: ${GCP_BUCKET}
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
     ports:
       - 6789:6789
     volumes:
-      - .:/home/src/
-      - ~/Documents/secrets/:/home/src/
+      - .:${MAGE_PATH}/
+      - ~/Documents/secrets/:${MAGE_PATH}/
     restart: on-failure:5
   postgres:
     image: postgres:14
