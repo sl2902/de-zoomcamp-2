@@ -49,8 +49,10 @@ POSTGRES_PORT=5432
 
 GCP_PROJECT_ID=
 GCP_BUCKET=
+
+MAGE_PATH=/home/src
 ```
 
-**5.** Create a Google free tier account, and create a service account with appropriate storage access
+**5.** Create a Google free tier account, and create a service account and assign it the role of Owner
 
 **6.** Run the Mage pipeline
