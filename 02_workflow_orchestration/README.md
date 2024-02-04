@@ -1,15 +1,14 @@
 # Mage.ai Workflow Orchestration
 
-![Python](https://img.shields.io/badge/Python-3.10_|_3.11-4B8BBE.svg?style=flat&logo=python&logoColor=FFD43B&labelColor=306998)
+![Python](https://img.shields.io/badge/Python-3.8-4B8BBE.svg?style=flat&logo=python&logoColor=FFD43B&labelColor=306998)
 ![Mage.ai](https://img.shields.io/badge/Mage.ai-0.9-111113?style=flat&logoColor=white&labelColor=111113)
 ![Docker](https://img.shields.io/badge/Docker-329DEE?style=flat&logo=docker&logoColor=white&labelColor=329DEE)
 
 ![License](https://img.shields.io/badge/license-CC--BY--SA--4.0-31393F?style=flat&logo=creativecommons&logoColor=black&labelColor=white)
 
 
-This module explores using Mage as a workflow orchestration tool to build and end to end pipeline to extract
-data from NY green taxi trips for the last three months of 2020, transforms it. The data is exported to both Postgres
-and as partitioned parquet files to Google Cloud Storage
+This module explores using Mage as a workflow orchestration tool to build an end to end pipeline that extracts
+data from NY green taxi trips for the last three months of 2020 and transforms them. The data is exported to both Postgres and as partitioned parquet files to Google Cloud Storage
 
 
 ## Tech Stack
