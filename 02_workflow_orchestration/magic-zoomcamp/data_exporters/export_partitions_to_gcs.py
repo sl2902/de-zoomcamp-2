@@ -25,6 +25,7 @@ def export_data(data, *args, **kwargs):
     project_id = os.environ.get("GCP_PROJECT_ID")
     fs_gcs = pa.fs.GcsFileSystem()
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/src/personal-gcp.json"
+    print(f'num partitions {data["lpep_pickup_date"].nunique()}')
     # Specify your data exporting logic here
     table = pa.Table.from_pandas(data)
     pq.write_to_dataset(
