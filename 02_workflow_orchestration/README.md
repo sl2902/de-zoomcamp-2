@@ -1,26 +1,57 @@
-# Data Engineering Zoomcamp
+# Mage.ai Workflow Orchestration
 
-## Taking the course
+![Python](https://img.shields.io/badge/Python-3.10_|_3.11-4B8BBE.svg?style=flat&logo=python&logoColor=FFD43B&labelColor=306998)
+![Mage.ai](https://img.shields.io/badge/Mage.ai-0.9-111113?style=flat&logoColor=white&labelColor=111113)
+![Docker](https://img.shields.io/badge/Docker-329DEE?style=flat&logo=docker&logoColor=white&labelColor=329DEE)
 
-### 2024 Cohort
-
-* **Start**: 15 January 2024 (Monday) at 17:00 CET
-* **Registration link**: https://airtable.com/shr6oVXeQvSI5HuWD
-* [Cohort folder](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/cohorts/2024) with homeworks and deadlines
-
-### Self-paced mode
-
-All the materials of the course are freely available, so that you
-can take the course at your own pace
-
-* Follow the suggested syllabus (see below) week by week
-* You don't need to fill in the registration form. Just start watching the videos and join Slack
-* Check [FAQ](https://docs.google.com/document/d/19bnYs80DwuUimHM65UV3sylsCn2j1vziPOwzBwQrebw/edit?usp=sharing) if you have problems
+![License](https://img.shields.io/badge/license-CC--BY--SA--4.0-31393F?style=flat&logo=creativecommons&logoColor=black&labelColor=white)
 
 
-## Syllabus 
+This module explores using Mage as a workflow orchestration tool to build and end to end pipeline to extract
+data from NY green taxi trips for the last three months of 2020, transforms it. The data is exported to both Postgres
+and as partitioned parquet files to Google Cloud Storage
 
-### [Module 1: Data Ingestion & Terraform](module1-data-ingestion)
-* [Python data ingestion with pandas](01_docker_terraform/1_docker_postgres/)
-* [Terraform for BigQuery and GCS](01_docker_terraform/1_terraform_gcp)
-* Homework
+
+## Tech Stack
+- [Mage.ai](https://docs.mage.ai/getting-started/setup)
+- [Pipenv](https://pipenv.pypa.io/en/latest/)
+- [Docker](https://docs.docker.com/get-docker/)
+
+
+## Steps to run
+
+### Developer Setup (Docker)
+
+**1.** Clone the repository
+```shell
+git clone https://github.com/sl2902/de-zoomcamp-2.git
+```
+
+**2.** Change to working directory:
+
+```shell
+cd 02_workflow_orchestration
+```
+
+**3.** Create a `.env` file:
+```shell
+touch .env
+```
+
+**3a.** Add the following env variables to it:
+```shell
+PROJECT_NAME=magic-zoomcamp
+POSTGRES_DBNAME=ny_taxi
+POSTGRES_SCHEMA=mage
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+
+GCP_PROJECT_ID=
+GCP_BUCKET=
+```
+
+**5.** Create a Google free tier account, and create a service account with appropriate storage access
+
+**6.** Run the Mage pipeline
