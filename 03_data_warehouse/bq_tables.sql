@@ -49,3 +49,17 @@ where lpep_pickup_datetime between '2022-06-01 00:00:00' and  '2022-06-30 23:59:
 
 select count(distinct PULocationID) from `green_taxi_trips.partitioned_clustered_green_tt_2022`
 where lpep_pickup_datetime between '2022-06-01 00:00:00' and  '2022-06-30 23:59:59'
+
+-- bonus
+-- 0 bytes processed as it is cached
+-- Unless the data in the view is invalidated by the underlying table
+-- it is not refreshed by the base table
+
+create materialized view if not exists `green_taxi_trips.materialized_green_tt_2022`
+as
+select * from `green_taxi_trips.partitioned_clustered_green_tt_2022`
+
+select 
+    count(*) 
+from 
+    `green_taxi_trips.partitioned_clustered_green_tt_2022`
