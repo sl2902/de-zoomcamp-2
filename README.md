@@ -20,7 +20,15 @@ can take the course at your own pace
 
 ## Syllabus 
 
-### [Module 1: Data Ingestion & Terraform](module1-data-ingestion)
+### [Module 1: Data Ingestion & Terraform](01_docker_terraform)
 * [Python data ingestion with pandas](01_docker_terraform/1_docker_postgres/)
 * [Terraform for BigQuery and GCS](01_docker_terraform/1_terraform_gcp)
+* Homework
+
+### [Module 2: Mage Workflow orchestration](02_workflow_orchestration)
+* [ETL pipeline using Mage workflow](02_magic_zoomcamp)
+* Homework
+
+### [Module 1: Bigquery Datewarehouse](03_data_warehouse)
+* [Python data ingestion with pandas](03_data_warehouse)
 * Homework
