@@ -62,4 +62,4 @@ select * from `green_taxi_trips.partitioned_clustered_green_tt_2022`
 select 
     count(*) 
 from 
-    `green_taxi_trips.partitioned_clustered_green_tt_2022`
+    `green_taxi_trips.materialized_green_tt_2022`
