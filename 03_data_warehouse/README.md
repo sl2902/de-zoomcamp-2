@@ -11,10 +11,10 @@ to check the performance of queries in terms of bytes processed
 
 
 ## Tech Stack
-(Pipenv)[https://pipenv.pypa.io/en/latest/]
-(Python)[https://www.python.org/]
-(GCS)[https://cloud.google.com/storage?hl=en]
-(BQ)[https://cloud.google.com/bigquery?hl=en]
+[Pipenv](https://pipenv.pypa.io/en/latest/)
+[Python](https://www.python.org/)
+[GCS](https://cloud.google.com/storage?hl=en)
+[BQ](https://cloud.google.com/bigquery?hl=en)
 
 ### Steps to run
 
@@ -28,7 +28,7 @@ git clone https://github.com/sl2902/de-zoomcamp-2.git
 
 **3.** Change working directory
 ```shell
-cd 03_data_warehouse
+cd 03_data_warehouse/
 ```
 
 **3.** Enable the virtual environment
