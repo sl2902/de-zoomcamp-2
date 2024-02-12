@@ -11,10 +11,10 @@ to check the performance of queries in terms of bytes processed
 
 
 ## Tech Stack
-[Pipenv](https://pipenv.pypa.io/en/latest/)
-[Python](https://www.python.org/)
-[GCS](https://cloud.google.com/storage?hl=en)
-[BQ](https://cloud.google.com/bigquery?hl=en)
+- [Pipenv](https://pipenv.pypa.io/en/latest/)
+- [Python](https://www.python.org/)
+- [GCS](https://cloud.google.com/storage?hl=en)
+- [BQ](https://cloud.google.com/bigquery?hl=en)
 
 ### Steps to run
 
