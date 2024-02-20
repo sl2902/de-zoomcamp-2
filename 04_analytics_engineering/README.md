@@ -6,7 +6,7 @@
 ![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)
 ![License](https://img.shields.io/badge/license-CC--BY--SA--4.0-31393F?style=flat&logo=creativecommons&logoColor=black&labelColor=white)
 
-The goal of the project is to use dbt in an ELT pipeline setting. dbt performs the 'T' in ELT; it transforms the NY Taxi trip datasets in BigQuery for green and yellow services for the periods 2019 and 20202, and fhv for period 2019 respectively. Streamlit was used to create a dashboard showcasing some insights into these data.
+The goal of the project is to use dbt in an ELT pipeline setting. dbt performs the 'T' in ELT; it transforms the NY Taxi trip datasets in BigQuery for green and yellow services for the periods 2019 and 20202, and fhv for period 2019 respectively. Streamlit has been used to create a dashboard showcasing some insights into these data.
 
 
 ## Tech Stack
