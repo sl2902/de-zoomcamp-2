@@ -93,4 +93,4 @@ http://localhost:8001
 ```
 
 **9.** Launch the streamlit app:
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)(https://de-zoomcamp-2-kxtdhy8nz5pdvwmjbmyzab.streamlit.app/)]
