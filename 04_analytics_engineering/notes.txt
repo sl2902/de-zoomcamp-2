@@ -1,0 +1,11 @@
+python py_scripts/load_gcs_to_bq.py --service=fhv --table_name=stg_fhv_taxi_trips --partition_col=pickup_datetime --clustering_cols=PUlocationID
+python py_scripts/load_taxi_trips_to_gcs.py --service=green --year=2019
+
+dbt init
+dbt deps
+dbt build --vars '{'is_test_run': 'false'}'
+dbt seed -- select "taxi_zone_lookup"
+dbt docs generate
+dbt docs serve --port 8001
+
+streamlit run streamlit/dashboard.py
