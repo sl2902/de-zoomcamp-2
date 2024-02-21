@@ -213,21 +213,24 @@ def make_choropleth(input_df, input_id, input_column, input_color_theme):
 
 # Line chart
 def make_linechart(input_df, input_x=None, input_y=None, input_color=None):
+    # https://stackoverflow.com/questions/53287928/tooltips-in-altair-line-charts
     subset = input_df.query("(year == @selected_year) & (service_type == @selected_service_type)").reset_index(drop=True)
     if len(subset) == 0:
         st.write(f"No data for service {selected_service_type}")
         return
     else:
-        # subset["pickup_date"] = subset["pickup_datetime"].dt.date
+        subset["pickup_date"] = subset["pickup_datetime"].dt.date
+        subset["month"] = subset["pickup_date"].to_numpy().astype("datetime64[M]")
         subset = subset.groupby(['month'], as_index=False).size()
         input_x, input_y = 'month', 'size'
         linechart = alt.Chart(subset).mark_line().encode(
-            alt.X(f"{input_x}:O", axis=alt.Axis(title="pickup month", titleFontSize=18, titlePadding=15, titleFontWeight=900, labelAngle=0), sort=list(mm_name.keys())),
+            alt.X(f"month({input_x}):T", axis=alt.Axis(title="pickup month", titleFontSize=18, titlePadding=15, titleFontWeight=900, labelAngle=0), sort=list(mm_name.keys())),
             alt.Y(f"{input_y}:Q", axis=alt.Axis(title="number of rides", titleFontSize=18, titlePadding=15, titleFontWeight=900, labelAngle=0)),
             color=alt.value('gold'),
-            tooltip=[alt.Tooltip(f"{input_y}:Q", title="num of rides", format=",d"), f'{input_x}:O']
+            tooltip=[alt.Tooltip(f"{input_y}:Q", title="num of rides", format=",d"), alt.Tooltip(f'month({input_x}):T', title="pickup month")]
         )
-        return linechart
+        tt = linechart.mark_line(strokeWidth=30, opacity=0.01)
+        return linechart + tt
 
 def _format_arrow(val):
     return f"{'↑' if val > 0 else '↓'} {abs(val):.2f}%" if val != 0 and val != 999 else '-'
