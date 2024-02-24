@@ -217,7 +217,7 @@ def load_geometry(url: str):
 def make_choropleth(input_df, url, input_id, input_column, input_color_theme):
     subset = input_df.query("(year == @selected_year) & (service_type == @selected_service_type)").reset_index(drop=True)
     aggregate = subset.groupby([input_id], as_index=False)[input_column].mean().round({input_column: 0})
-    aggregate[input_id] = pd.to_numeric(aggregate[input_id])
+    aggregate[input_id] = aggregate[input_id].astype(int)
     aggregate[input_column] = pd.to_numeric(aggregate[input_column])
 
     aggregate = aggregate.rename(columns={input_id: "location_id"})
@@ -245,19 +245,18 @@ def make_choropleth(input_df, url, input_id, input_column, input_color_theme):
         stroke='black',
         strokeWidth=1
     ).transform_lookup(
-        lookup='location_id',
+        lookup='properties.location_id',
         from_=alt.LookupData(
             data=aggregate,
-            key=input_id,
-            fields=[input_id, input_column])
+            key='location_id',
+            fields=['location_id', input_column])
     ).encode(
-        color=alt.Color('properties.zone:N', scale=alt.Scale(scheme=input_color_theme), title="Zone"),
+        color=alt.Color(f'properties.zone:O', scale=alt.Scale(scheme=input_color_theme), title="Zone"),
         tooltip=['properties.zone:O', f'properties.{input_column}:Q']
     ).properties(
         width=350,
         height=450
     )
-
 
 
 
