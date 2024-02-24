@@ -164,7 +164,7 @@ def make_heatmap(input_df, input_y, input_x, input_color, input_color_theme):
             tooltip=[f'{input_y}', f'{input_x}', alt.Tooltip(f"mean_amount:Q", format="$,.0f")],
             color=alt.Color(f'mean_amount:Q',
                             #  legend="None",
-                            title="Range",
+                            title="Average amount($)",
                              scale=alt.Scale(scheme=input_color_theme)),
             stroke=alt.value('black'),
             strokeWidth=alt.value(0.25),
@@ -190,7 +190,7 @@ def make_heatmap2(input_df, input_y, input_x, input_color, input_color_theme):
             alt.X(f"{input_x}:O", axis=alt.Axis(title="pickup borough", titleFontSize=18, titlePadding=15, titleFontWeight=900, labelAngle=0)),
             tooltip=[f'{input_y}', f'{input_x}', alt.Tooltip(f"mean_amount:Q", format="$,.0f")],
             color=alt.Color(f'mean_amount:Q',
-                            title="Range",
+                            title="Average amount($)",
                              scale=alt.Scale(scheme=input_color_theme)),
             stroke=alt.value('black'),
             strokeWidth=alt.value(0.25),
@@ -251,8 +251,8 @@ def make_choropleth(input_df, url, input_id, input_column, input_color_theme):
             key='location_id',
             fields=['location_id', input_column])
     ).encode(
-        color=alt.Color(f'properties.zone:O', scale=alt.Scale(scheme=input_color_theme), title="Zone"),
-        tooltip=['properties.zone:O', f'properties.{input_column}:Q']
+        color=alt.Color(f'{input_column}:Q', scale=alt.Scale(scheme=input_color_theme), title="Average amount ($)"),
+        tooltip=[alt.Tooltip('properties.zone:O' ,title="zone"), alt.Tooltip(f'{input_column}:Q', format="$d")]
     ).properties(
         width=350,
         height=450
