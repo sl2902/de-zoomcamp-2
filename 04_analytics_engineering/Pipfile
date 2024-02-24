@@ -8,11 +8,12 @@ dbt-bigquery= ">=1.7.2,<2.0"
 google-api-core = "*"
 pandas = "*"
 pyarrow = "*"
-altair = "*"
 "plotly.express" = "*"
 google-cloud = "==0.34.0"
 streamlit = "*"
 db-dtypes = "==1.2.0"
+geopandas = "*"
+altair = "==4.2.2"
 
 [dev-packages]
 
