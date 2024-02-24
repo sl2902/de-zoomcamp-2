@@ -6,6 +6,7 @@ import plotly.express as px
 from google.oauth2 import service_account
 from google.cloud import bigquery
 import os, sys
+import geopandas as gpd
 import json
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -17,10 +18,11 @@ PROJECT_NUMBER = "hive-413217"
 DATASET = "dbt_taxi_trips"
 TABLE = "fact_trips"
 FHV_TABLE = "fact_fhv_trips"
+url = "https://raw.githubusercontent.com/sl2902/de-zoomcamp-2/main/04_analytics_engineering/geo_data/taxi_zones.geojson"
 
 
 page_title = "NYC Taxi Trips dashboard"
-alt.themes.enable("dark")
+# alt.themes.enable("dark")
 
 st.set_page_config(
     page_title=page_title,
@@ -61,7 +63,11 @@ credentials = service_account.Credentials.from_service_account_info(
 )
 client = bigquery.Client(credentials=credentials)
 
-@st.cache_data(ttl=600)
+# with open('geo_data/taxi_zones.geojson', 'r') as json_data:
+#     geo_data = json.load(json_data)
+
+
+@st.cache_data(ttl=1800)
 def prepare_txn_query(query):
     print(query)
     query_job = client.query(query).to_dataframe()
@@ -73,6 +79,7 @@ df = prepare_txn_query("""
                        trip_id,
                        vendor_id,
                        service_type,
+                       pickup_locationid,
                        pickup_borough,
                        pickup_zone,
                        dropoff_borough,
@@ -101,6 +108,7 @@ df2 = prepare_txn_query("""
                   SELECT
                        Affiliated_base_number,
                        'fhv' as service_type,
+                       pickup_locationid,
                        pickup_borough,
                        pickup_zone,
                        dropoff_borough,
@@ -126,6 +134,12 @@ with st.sidebar:
     color_theme_list = ['blues', 'cividis', 'greens', 'inferno', 'magma', 'plasma', 'reds', 'rainbow', 'turbo', 'viridis']
     selected_color_theme = st.selectbox('Select a color theme', color_theme_list)
     df["total_amount"] = pd.to_numeric(df["total_amount"], errors="coerce")
+    # geo_df = gpd.GeoDataFrame.from_features((geo_data))
+    # geo_df = geo_df.to_crs('EPSG:4326')
+    # geo_df = geo_df[geo_df['borough'] == 'Manhattan']
+    # geo_df = geo_df[['location_id', 'zone', 'geometry']]
+    # geo_df = geo_df.rename(columns={'location_id':'LocationID'})
+    # geo_df["LocationID"] = pd.to_numeric(geo_df["LocationID"])
 
 
 def make_heatmap(input_df, input_y, input_x, input_color, input_color_theme):
@@ -189,26 +203,64 @@ def make_heatmap2(input_df, input_y, input_x, input_color, input_color_theme):
     
     return heatmap
 
-# Choropleth map
-def make_choropleth(input_df, input_id, input_column, input_color_theme):
-    aggregate = input_df.groupby(["txn_date", 'state_code'], as_index=False).agg({'revenue': 'mean'})
-    avg_revenue = aggregate['revenue']
-    choropleth = px.choropleth(aggregate, locations=input_id, color=avg_revenue, locationmode="USA-states",
-                               color_continuous_scale=input_color_theme,
-                               color_continuous_midpoint=aggregate["revenue"].median(),
-                               range_color=(aggregate["revenue"].min(), aggregate["revenue"].max()),
-                               scope="usa",
-                              #  labels={'revenue':'Revenue'},
-                               hover_data={'revenue': ':$,.0f'}
-                              )
-   #  choropleth.update_traces(hovertemplate=f'revenue: {avg_revenue:,.0f}')
-    choropleth.update_layout(
-        template='plotly_dark',
-        plot_bgcolor='rgba(0, 0, 0, 0)',
-        paper_bgcolor='rgba(0, 0, 0, 0)',
-        margin=dict(l=0, r=0, t=0, b=0),
-        height=350
+@st.cache_data()
+def load_geometry(url: str):
+    return (
+        alt.Data(
+            url=url,
+            format=alt.DataFormat(property='features')
+        )
     )
+
+
+# Choropleth map
+def make_choropleth(input_df, url, input_id, input_column, input_color_theme):
+    subset = input_df.query("(year == @selected_year) & (service_type == @selected_service_type)").reset_index(drop=True)
+    aggregate = subset.groupby([input_id], as_index=False)[input_column].mean().round({input_column: 0})
+    aggregate[input_id] = pd.to_numeric(aggregate[input_id])
+    aggregate[input_column] = pd.to_numeric(aggregate[input_column])
+
+    aggregate = aggregate.rename(columns={input_id: "location_id"})
+
+    geometry = load_geometry(url)
+
+    colours_obj = alt.Color(f'properties.{input_column}:Q',
+                            scale=alt.Scale(scheme=input_color_theme),
+                            legend=None,
+                            title="Average pickup revenue")
+
+    # sel_line_hover = alt.selection_single(on='mouseover', empty='none')
+    # sel_line_col = alt.selection_single()
+    # sel_line_size = alt.selection_single(empty='none')
+    # choropleth = alt.Chart(geometry).mark_geoshape(
+    # stroke='black',
+    # strokeWidth=1
+    # ).encode(
+    #     color=alt.Color('properties.zone:N', scale=alt.Scale(scheme='viridis'), title="Zone"),
+    #     tooltip=['properties.location_id:O']
+    # )
+    # https://github.com/streamlit/streamlit/issues/1002
+
+    choropleth = alt.Chart(geometry).mark_geoshape(
+        stroke='black',
+        strokeWidth=1
+    ).transform_lookup(
+        lookup='location_id',
+        from_=alt.LookupData(
+            data=aggregate,
+            key=input_id,
+            fields=[input_id, input_column])
+    ).encode(
+        color=alt.Color('properties.zone:N', scale=alt.Scale(scheme=input_color_theme), title="Zone"),
+        tooltip=['properties.zone:O', f'properties.{input_column}:Q']
+    ).properties(
+        width=350,
+        height=450
+    )
+
+
+
+
     return choropleth
 
 # Line chart
@@ -272,8 +324,12 @@ with col[0]:
 
 with col[1]:
    st.markdown('#### Average trip amount')
-#    choropleth = make_choropleth(df, 'state_code', 'revenue', selected_color_theme)
-#    st.plotly_chart(choropleth, use_container_width=True)
+   choropleth = make_choropleth(df, url, 'pickup_locationid', 'total_amount', selected_color_theme)
+   if choropleth:
+       st.altair_chart(choropleth, use_container_width=True)
+   else:
+       st.text(f"No data for service {selected_service_type}")
+
    heatmap = make_heatmap(df, 'month', 'pickup_borough', 'total_amount', selected_color_theme)
    if heatmap:
        st.altair_chart(heatmap, use_container_width=True)
