@@ -14,6 +14,9 @@ streamlit = "*"
 db-dtypes = "==1.2.0"
 geopandas = "*"
 altair = "==4.2.2"
+duckdb = "*"
+pandas-gbq = "*"
+tqdm = "*"
 
 [dev-packages]
 
