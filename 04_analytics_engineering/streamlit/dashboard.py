@@ -7,7 +7,10 @@ from google.oauth2 import service_account
 from google.cloud import bigquery
 import os, sys
 import geopandas as gpd
+import duckdb
 import json
+import calendar
+from datetime import datetime
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Append the 'project_root' directory to the Python path
@@ -19,6 +22,8 @@ DATASET = "dbt_taxi_trips"
 TABLE = "fact_trips"
 FHV_TABLE = "fact_fhv_trips"
 url = "https://raw.githubusercontent.com/sl2902/de-zoomcamp-2/main/04_analytics_engineering/geo_data/taxi_zones.geojson"
+
+
 
 
 page_title = "NYC Taxi Trips dashboard"
@@ -70,12 +75,23 @@ client = bigquery.Client(credentials=credentials)
 @st.cache_data(ttl=1800)
 def prepare_txn_query(query):
     print(query)
-    query_job = client.query(query).to_dataframe()
-   #  rows = [dict(row) for row in recs]
-    return query_job
+    recs = client.query(query).to_dataframe()
+    # recs = client.query_and_wait(query)
+    # rows = [dict(row) for row in recs]
+    return recs
 
-df = prepare_txn_query("""
-                  SELECT
+@st.cache_data(ttl=1800)
+def duckdb_bq(project_number, dataset, table):
+    # bloody slow
+    client = bigquery.Client()
+    table = bigquery.TableReference.from_string(
+    f"{project_number}.{dataset}.{table}"
+)
+    rows = client.list_rows(table, max_results=1000000)
+    fact_trips = rows.to_arrow(create_bqstorage_client=True)
+    cursor = duckdb.connect()
+    df = cursor.execute("""
+                         SELECT
                        trip_id,
                        vendor_id,
                        service_type,
@@ -93,37 +109,94 @@ df = prepare_txn_query("""
                        extract(year from pickup_datetime) as year,
                        format_date('%B', pickup_datetime) as month
                   FROM
-                     `{project_number}.{bq_dataset}.{table}`
+                     fact_trips
                   WHERE
                        extract(year from pickup_datetime) >= 2019
                   AND
                        total_amount > 0
                   AND
                        total_amount < 1000
-                  LIMIT 100000
-                  """.format(project_number=PROJECT_NUMBER, bq_dataset=DATASET, table=TABLE)
-)
+                """).fetchall()
+    return df
 
-df2 = prepare_txn_query("""
-                  SELECT
-                       Affiliated_base_number,
-                       'fhv' as service_type,
-                       pickup_locationid,
-                       pickup_borough,
-                       pickup_zone,
-                       dropoff_borough,
-                       dropoff_zone,
-                       pickup_datetime,
-                       dropoff_datetime,
-                       extract(year from pickup_datetime) as year,
-                       format_date('%B', pickup_datetime) as month
-                  FROM
-                     `{project_number}.{bq_dataset}.{table}`
-                  WHERE
-                       Affiliated_base_number is not null
-                  LIMIT 100000
-                  """.format(project_number=PROJECT_NUMBER, bq_dataset=DATASET, table=FHV_TABLE)
+# df = duckdb_bq(PROJECT_NUMBER, DATASET, TABLE)
+
+def list_partitions(project_number, dataset, table):
+    client = bigquery.Client()
+    return client.list_partitions(f"{project_number}.{dataset}.{table}")
+
+qry1 = """
+        SELECT
+            trip_id,
+            vendor_id,
+            service_type,
+            pickup_locationid,
+            pickup_borough,
+            pickup_zone,
+            dropoff_borough,
+            dropoff_zone,
+            pickup_datetime,
+            dropoff_datetime,
+            passenger_count,
+            trip_distance,
+            total_amount,
+            payment_type_description,
+            extract(year from pickup_datetime) as year,
+            format_date('%B', pickup_datetime) as month
+        FROM
+            `{project_number}.{bq_dataset}.{table}`
+        WHERE
+            extract(year from pickup_datetime) >= 2019
+        AND
+            total_amount > 0
+        AND
+            total_amount < 1000
+         LIMIT 1000000
+        """
+
+qry2 = """
+        SELECT
+            Affiliated_base_number,
+            'fhv' as service_type,
+            pickup_locationid,
+            pickup_borough,
+            pickup_zone,
+            dropoff_borough,
+            dropoff_zone,
+            pickup_datetime,
+            dropoff_datetime,
+            extract(year from pickup_datetime) as year,
+            format_date('%B', pickup_datetime) as month
+        FROM
+            `{project_number}.{bq_dataset}.{table}`
+        WHERE
+            Affiliated_base_number is not null
+        
+         LIMIT 1000000
+        """
+
+@st.cache_data(ttl=1800)
+def generate_all_rows(qry, table, years=[2019, 2020]):
+    df = pd.DataFrame()
+    for year in years:
+        for month in range(1, 2):
+            first, last = calendar.monthrange(year, month)
+            start_date = datetime.strftime(datetime(year, month, first), '%Y-%m-%d')
+            end_date = datetime.strftime(datetime(year, month, last), '%Y-%m-%d')
+            tmp_df = prepare_txn_query(qry.format(project_number=PROJECT_NUMBER, bq_dataset=DATASET, table=table, start_date=start_date, end_date=end_date)
+            )
+            df = pd.concat([tmp_df, df])
+    return df
+
+df = prepare_txn_query(
+    qry1.format(project_number=PROJECT_NUMBER, bq_dataset=DATASET, table=TABLE)
 )
+df2 = prepare_txn_query(
+    qry2.format(project_number=PROJECT_NUMBER, bq_dataset=DATASET, table=FHV_TABLE)
+)
+# df = generate_all_rows(qry1, TABLE)
+
+# df2 = generate_all_rows(qry2, FHV_TABLE, years=[2019])
 
 with st.sidebar:
     st.title(f'🏂 {page_title}')
