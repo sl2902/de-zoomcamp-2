@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fa96e0fe58db717f89a844137588ed368f9523ffff4f4cab175d05e62dae53c8"
+            "sha256": "e770bf9e56b75b6f157a82b5bd9470d0d59f892a8a77cb317fc9c5fce0951ea0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -851,10 +851,10 @@
         },
         "py4j": {
             "hashes": [
-                "sha256:276a4a3c5a2154df1860ef3303a927460e02e97b047dc0a47c1c3fb8cce34db6",
-                "sha256:52d171a6a2b031d8a5d1de6efe451cf4f5baff1a2819aabc3741c8406539ba04"
+                "sha256:0b6e5315bb3ada5cf62ac651d107bb2ebc02def3dee9d9548e3baac644ea8dbb",
+                "sha256:85defdfd2b2376eb3abf5ca6474b51ab7e0de341c75a02f46dc9b5976f5a5c1b"
             ],
-            "version": "==0.10.9.5"
+            "version": "==0.10.9.7"
         },
         "pycparser": {
             "hashes": [
@@ -873,17 +873,17 @@
         },
         "pyspark": {
             "hashes": [
-                "sha256:7ebe8e9505647b4d124d5a82fca60dfd3891021cf8ad6c5ec88777eeece92cf7"
+                "sha256:dd6569e547365eadc4f887bf57f153e4d582a68c4b490de475d55b9981664910"
             ],
             "index": "pypi",
-            "version": "==3.3.0"
+            "version": "==3.5.1"
         },
         "python-dateutil": {
             "hashes": [
                 "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86",
                 "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==2.8.2"
         },
         "python-json-logger": {
@@ -1224,7 +1224,7 @@
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==1.16.0"
         },
         "sniffio": {
