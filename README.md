@@ -29,6 +29,14 @@ can take the course at your own pace
 * [ETL pipeline using Mage workflow](02_magic_zoomcamp)
 * Homework
 
-### [Module 1: Bigquery Datewarehouse](03_data_warehouse)
+### [Module 3: Bigquery Datawarehouse](03_data_warehouse)
 * [Python data ingestion with pandas](03_data_warehouse)
+* Homework
+
+### [Module 4: Analytical Engineering](04_analytics_engineering)
+* [ELT pipeline using dbt](04_analytics_engineering)
+* Homework
+
+### [Module 5: Batch Processing](05_batch_processing)
+* [Pyspark for transformations](05_batch_processing)
 * Homework
