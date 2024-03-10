@@ -7,7 +7,7 @@ from google.oauth2 import service_account
 from google.cloud import bigquery
 import os, sys
 import geopandas as gpd
-import duckdb
+# import duckdb
 import json
 import calendar
 from datetime import datetime
